@@ -2,10 +2,7 @@ import React, { useState }  from 'react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import dateFnsFormat from 'date-fns/format';
-import isAfter from 'date-fns/isAfter';
-import isBefore from "date-fns/isBefore";
-import addDays from "date-fns/addDays";
-import isToday from "date-fns/isToday";
+import { TaskItems } from './TaskItems';
 
 const FORMAT = 'dd/MM/yyyy';
 function formatDate(date, format, locale) {
@@ -63,33 +60,6 @@ const TASKS_HEADER_MAPPING = {
     TODAY : "Today",
     NEXT_7 : "Next 7 days",
 };
-
-const TaskItems = ({selectedTab, tasks}) => {
-    let tasksToRender = [...tasks];
-    if(selectedTab === "NEXT_7") {
-        tasksToRender = tasksToRender.filter(
-            (task) => 
-            isAfter(task.date, new Date()) &&
-            isBefore(task.date, addDays(new Date(), 7))
-        );
-    }
-
-    if(selectedTab === "TODAY") {
-        tasksToRender = tasksToRender.filter((task) => isToday(task.date));
-    }
-
-    return (
-        <div className="task-items-container">
-            {tasksToRender.map((task) => (
-                <div className="task-item">
-                    <p>{task.text}</p>
-                    <p>{dateFnsFormat(new Date(task.date), FORMAT)}</p>
-                </div>
-            ))}
-        </div>
-    );
-};
-
 
 const Tasks = ({ selectedTab }) => {
     const [showAddTask, setShowAddTask] = useState(false);
